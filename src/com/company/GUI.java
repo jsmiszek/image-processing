@@ -13,8 +13,10 @@ public class GUI extends JFrame implements ActionListener {
 
     JButton buttonOpenFile;
     JButton buttonQuitProgram;
+    JButton buttonImageErode;
 
     ImageHandler image;
+    Imclose imageAfterErode;
 
 
     public GUI() {
@@ -29,8 +31,12 @@ public class GUI extends JFrame implements ActionListener {
         buttonOpenFile.addActionListener(this);
 
 
-    }
+        buttonImageErode = new JButton("Erozja");
+        buttonImageErode.setBounds(50, 125, 200, 50);
+        add(buttonImageErode);
+        buttonImageErode.addActionListener(this);
 
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -47,13 +53,17 @@ public class GUI extends JFrame implements ActionListener {
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                     Component frame = null;
-                    JOptionPane.showMessageDialog(null, "Błąd otwarcia pliku\nPlik należy umieścić w głównym katalogu (src)");
+                    JOptionPane.showMessageDialog(null, "Błąd otwarcia pliku\n");
                 }
             }
         }
 
-        if (buttonQuitProgram.equals(source)) {
-            System.exit(0);
+
+        if (buttonImageErode.equals(source)) {
+
+            System.out.println("Erozja Obrazu");
+            new OpenDialog();
+            imageAfterErode = new Imclose(OpenDialog.getData(), image.getSourceImage());
         }
     }
 }

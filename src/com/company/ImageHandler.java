@@ -10,24 +10,33 @@ import java.io.IOException;
 public class ImageHandler {
 
     JFrame frame;
-    BufferedImage image;
+
+    BufferedImage sourceImage;
     String imagePath;
+
+    public ImageHandler(){}
 
     public ImageHandler(String imagePath) throws IOException {
         this.imagePath = imagePath;
 
         loadImage();
-        displayImage();
-        saveImage(image, "lenaaaaaaa.jpg");
+        displayImage(sourceImage, "pierwotny");
+        System.out.println(sourceImage.getRGB(1,1));
+        System.out.println(sourceImage.getRGB(1,2));
+        System.out.println(sourceImage.getRGB(1,3));
+    }
+
+    public BufferedImage getSourceImage() {
+        return sourceImage;
     }
 
     private void loadImage() throws IOException {
-        image = ImageIO.read(new File(imagePath));
+        sourceImage = ImageIO.read(new File(imagePath));
     }
 
-    private void displayImage(){
+    public void displayImage(BufferedImage image, String nameFrame){
         ImageIcon icon = new ImageIcon(image);
-        frame = new JFrame("Obraz");
+        frame = new JFrame(nameFrame);
         JLabel label = new JLabel();
         label.setIcon(icon);
         frame.getContentPane().add(label, BorderLayout.CENTER);
@@ -36,9 +45,10 @@ public class ImageHandler {
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         frame.setVisible(true);
+
     }
 
-    public void saveImage(BufferedImage image, String name){
+    public static void saveImage(BufferedImage image, String name){
         File file = new File(name);
         try {
             ImageIO.write(image, "png", file);
