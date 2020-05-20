@@ -1,9 +1,11 @@
 package com.company;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Imclose extends ImageHandler{
+import static com.company.ImageHandler.displayImage;
+import static com.company.ImageHandler.saveImage;
+
+public class Imclose{
 
     int radius;                     //promien kola - elementu strukturalnego
     BufferedImage sourceImage;
@@ -18,36 +20,37 @@ public class Imclose extends ImageHandler{
         if(radius <= 0){
             System.out.println("Radius must be greater than 0!");
         }
-        BufferedImage finalImage = Erosion(Dilatation());
-        displayImage(finalImage, "po zamknieciu");
-        saveImage(finalImage,"po_erozji.png");
+        BufferedImage finalImage = Dilatation(sourceImage);
+        finalImage = Erosion(finalImage);
+        displayImage(finalImage, "Zamknięcie");
+        saveImage(finalImage,"zamkniecie.png");
     }
 
     private BufferedImage Erosion(BufferedImage sourceImage) {
-        BufferedImage afterErosion= new BufferedImage(sourceImage.getWidth(),sourceImage.getHeight(), BufferedImage.TYPE_INT_RGB);//TYPE_BYTE_GRAY);
+        BufferedImage afterErosion= new BufferedImage(sourceImage.getWidth(),sourceImage.getHeight(), sourceImage.getType());//TYPE_INT_RGB);//TYPE_BYTE_GRAY);
 
         for (int k = 0; k < sourceImage.getHeight(); k++) {
             for (int l = 0; l < sourceImage.getWidth(); l++) {
-                //afterErode.getRaster().setSample(k, l, 0, minimumColor(k,l));
-                afterErosion.setRGB(k,l,minimumColor(k,l));
+                afterErosion.getRaster().setSample(l, k, 0, minimumColor(k,l, sourceImage));
+                //afterErosion.setRGB(l, k,minimumColor(k, l, sourceImage));
             }
         }
         return afterErosion;
     }
 
-    private BufferedImage Dilatation() {
-        BufferedImage afterDilatation = new BufferedImage(sourceImage.getWidth(),sourceImage.getHeight(), BufferedImage.TYPE_INT_RGB);//TYPE_BYTE_BINARY);//TYPE_BYTE_GRAY);
+    private BufferedImage Dilatation(BufferedImage sourceImage) {
+        BufferedImage afterDilatation = new BufferedImage(sourceImage.getWidth(),sourceImage.getHeight(), sourceImage.getType());
 
         for (int k = 0; k < sourceImage.getHeight(); k++) {
             for (int l = 0; l < sourceImage.getWidth(); l++) {
-                //afterDilatation.getRaster().setSample(k, l, 0, maximumColor(k,l));
-                afterDilatation.setRGB(k,l,maximumColor(k,l));
+                afterDilatation.getRaster().setSample(l, k, 0, maximumColor(k, l, sourceImage));
+                //afterDilatation.setRGB(l, k,maximumColor(k, l, sourceImage));
             }
         }
         return afterDilatation;
     }
 
-    private int minimumColor(int x0, int y0) { // funkcja szukająca koloru w skali szarości o najniższej wartosci w promieniu radius
+    private int minimumColor(int x0, int y0, BufferedImage sourceImage) { // funkcja szukająca koloru o najniższej wartosci w promieniu radius
         int minimum = 256;
         for (int i = x0 - radius; i <= x0 + radius; i++)
             for (int j = y0 - radius; j <= y0 + radius; j++) {
@@ -55,8 +58,8 @@ public class Imclose extends ImageHandler{
                     continue;
                 if ((x0 - i) * (x0 - i) + (y0 - j) * (y0 - j) <= radius * radius) { // jeśli jest w obrębie koła
 
-//                    int temp = sourceImage.getRaster().getSample(i, j, 0);
-                    int temp = sourceImage.getRGB(i, j);
+                    int temp = sourceImage.getRaster().getSample(j, i, 0);
+                    //int temp = sourceImage.getRGB(j, i);
                     if (temp < minimum) // szukam minimalna wartosc koloru
                         minimum = temp;
                     if (minimum == 0) return minimum;
@@ -68,7 +71,7 @@ public class Imclose extends ImageHandler{
         return minimum;
     }
 
-    private int maximumColor(int x0, int y0) { // funkcja szukająca koloru w skali szarości o najniższej wartosci w promieniu radius
+    private int maximumColor(int x0, int y0, BufferedImage sourceImage) { // funkcja szukająca koloru najniższej wartosci w promieniu radius
         int maximum = -1;
         for (int i = x0 - radius; i <= x0 + radius; i++)
             for (int j = y0 - radius; j <= y0 + radius; j++) {
@@ -76,8 +79,8 @@ public class Imclose extends ImageHandler{
                     continue;
                 if ((x0 - i) * (x0 - i) + (y0 - j) * (y0 - j) <= radius * radius) { // jeśli jest w obrębie koła
 
-                   // int temp = sourceImage.getRaster().getSample(i, j, 0);
-                    int temp = sourceImage.getRGB(i, j);
+                    int temp = sourceImage.getRaster().getSample(j, i, 0);
+                    //int temp = sourceImage.getRGB(j, i);
                     if (temp > maximum) // szukam minimalna wartosc koloru
                         maximum = temp;
                     if (maximum == 255) return maximum;

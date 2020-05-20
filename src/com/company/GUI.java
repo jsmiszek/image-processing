@@ -1,6 +1,7 @@
 package com.company;
 
-import javax.imageio.ImageIO;
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,14 +10,19 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+
+import static com.company.ImageHandler.displayImage;
+import static com.company.ImageHandler.loadImage;
+
 public class GUI extends JFrame implements ActionListener {
 
     JButton buttonOpenFile;
-    JButton buttonQuitProgram;
-    JButton buttonImageErode;
+    JButton buttonImageClosing;
+    JButton buttonImageMap;
 
-    ImageHandler image;
+    BufferedImage sourceImage;
     Imclose imageAfterErode;
+    LengthMap imageAfterMap;
 
 
     public GUI() {
@@ -25,18 +31,49 @@ public class GUI extends JFrame implements ActionListener {
         setTitle("Aplikacja Obrazy");
         setLayout(null);
 
+        //Map<JButton, String> buttons = new LinkedHashMap<>();
+
+
+
+        //buttons.put(buttonOpenFile, "Otwórz obraz");
+        //buttons.put(buttonImageClosing, "Zamkniecie");
+       // buttons.put(buttonImageMap, "Mapa odleglosci geodezyjnej");
+
+
         buttonOpenFile = new JButton("Otwórz obraz");
         buttonOpenFile.setBounds(50, 50, 200, 50); // nadanie parametrow przyciskowi
         add(buttonOpenFile);
         buttonOpenFile.addActionListener(this);
 
 
-        buttonImageErode = new JButton("Erozja");
-        buttonImageErode.setBounds(50, 125, 200, 50);
-        add(buttonImageErode);
-        buttonImageErode.addActionListener(this);
+        buttonImageClosing = new JButton("Zamknięcie");
+        buttonImageClosing.setBounds(50, 125, 200, 50);
+        add(buttonImageClosing);
+        buttonImageClosing.addActionListener(this);
+
+        buttonImageMap = new JButton("Map");
+        buttonImageMap.setBounds(50, 200, 200, 50);
+        add(buttonImageMap);
+        buttonImageMap.addActionListener(this);
+
+
+
+
+        //addButton(buttons);
 
     }
+
+   /* private void addButton(Map<JButton, String> buttons){
+        int i = 0;
+        for(JButton button : buttons.keySet()){
+            button = new JButton(buttons.get(button));
+            button.setBounds(50, 50 + (i * 75), 200, 50);
+            add(button);
+            button.addActionListener(this);
+            i++;
+        }
+    }*/
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -49,7 +86,8 @@ public class GUI extends JFrame implements ActionListener {
             if (fileChoose.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 File file = fileChoose.getSelectedFile();
                 try {
-                    image = new ImageHandler(file.getName());
+                    sourceImage = loadImage(file.getName());
+                    displayImage(sourceImage, "Obraz pierwotny");
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                     Component frame = null;
@@ -59,11 +97,21 @@ public class GUI extends JFrame implements ActionListener {
         }
 
 
-        if (buttonImageErode.equals(source)) {
+        if (buttonImageClosing.equals(source)) {
 
-            System.out.println("Erozja Obrazu");
+            System.out.println("Zamkniecie");
             new OpenDialog();
-            imageAfterErode = new Imclose(OpenDialog.getData(), image.getSourceImage());
+            imageAfterErode = new Imclose(OpenDialog.getData(), sourceImage);
+        }
+
+        if (buttonImageMap.equals(source)){
+            System.out.println("Mapa");
+            new OpenDialogPoint();
+            Point p = OpenDialogPoint.getMyPoint();
+            System.out.println(p.x + "  " + p.y);
+
+            imageAfterMap = new LengthMap(OpenDialogPoint.getMyPoint(), sourceImage);
+
         }
     }
 }

@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 public class OpenDialog {
 
     private static JDialog dialog;
-    JLabel label1=new JLabel("Radius");
+    JLabel label1=new JLabel("Promień");
     static JTextField in1Field=new JTextField();
     static String data;
     static int radius;
