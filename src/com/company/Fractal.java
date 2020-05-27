@@ -5,6 +5,7 @@ import java.util.Random;
 
 import static com.company.ImageHandler.*;
 
+
 public class Fractal {
 
     BufferedImage image;
