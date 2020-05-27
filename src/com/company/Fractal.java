@@ -18,15 +18,11 @@ public class Fractal {
         makeFractal();
     }
 
-    double [][] c = {{0,1},{1,1}};
-    double [][] d = {{0,1,1},{0,0,1}};
+
     private void makeFractal(){
-
-        /*BufferedImage finalImage = generateImage();
+        BufferedImage finalImage = generateImage();
         displayImage(finalImage, "Fraktal");
-        saveImage(finalImage,"fraktal.png");*/
-
-
+        saveImage(finalImage,"fraktal.png");
     }
 
     private BufferedImage generateImage(){
@@ -34,48 +30,52 @@ public class Fractal {
         Random rand = new Random();
         int width = image.getWidth();
         int height = image.getHeight();
-        double x = rand.nextInt(width + 1); //losuje piksel początkowy
-        double y = rand.nextInt(height + 1);
+        double x = rand.nextInt(width); //losuje piksel początkowy
+        double y = rand.nextInt(height);
         int z = 1;
 
         //przy mnożeniu : kolumny == wiersze
-        double [][] macierz = {{x, y, z}};
-        int losowa;
+        double [][] macierz = {{x}, {y}, {z}};
 
         BufferedImage finalImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
-        for(int i = 0; i < height; i++)
-            for(int j = 0; j < width; j++)
+        for(int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++)
                 finalImage.getRaster().setSample(j, i, 0, 0);
+        }
+        finalImage.getRaster().setSample((int)x, (int)y, 0, 1);
 
-
-        for( int i = 0; i < 50000000; i++ ){
-            losowa = rand.nextInt(4);           //losuję liczbę z przedziału 0-4
+        int losowa;
+        for( int i = 0; i < 10000000; i++ ){
+            losowa = rand.nextInt(4);           //losuję liczbę z przedziału 0-3
 
             switch(losowa){
                 case 0:
                     macierz = matrixMultiply(a1, macierz);
+                    break;
                 case 1:
                     macierz = matrixMultiply(a2, macierz);
+                    break;
                 case 2:
                     macierz = matrixMultiply(a3, macierz);
+                    break;
                 case 3:
                     macierz = matrixMultiply(a4, macierz);
+                    break;
+                default:
+                    break;
             }
 
-            x = Math.round(20 * macierz[0][0] + width/2);
-            y = Math.round(20 * macierz[0][1] + height/2);
-            if(x >= 0 && x <= width && y >= 0 && y <= height)
+            x = Math.round(20 * macierz[0][0] + (double)width/2);
+            y = Math.round(20 * macierz[1][0] + (double)height/6);
+            if(x >= 0 && x < width && y >= 0 && y < height)
                 if((finalImage.getRaster().getSample((int)x, (int)y, 0)) < 255)       //jeśli x i y mieści sie w obrazie to wartość piksela zwiększam o 1 (o ile nie osiągnął już wartości 255)
-                    finalImage.getRaster().setSample((int)x, (int)y, 0, finalImage.getRaster().getSample((int)x, (int)y, 0) + 1);
+                    finalImage.getRaster().setSample((int)x, (int)y, 0, (finalImage.getRaster().getSample((int)x, (int)y, 0)) + 1);
         }
-
         return finalImage;
     }
 
     private double[][] matrixMultiply(double[][] a, double[][] b) {
         double[][] c = new double[a.length][b[0].length];
-        System.out.println(a.length);
-        System.out.println(b[0].length);
         for(int i = 0; i < a.length; ++i) {
             for(int j = 0; j < b[0].length; ++j) {
                 c[i][j] = 0;
