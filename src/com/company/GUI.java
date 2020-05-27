@@ -19,21 +19,22 @@ public class GUI extends JFrame implements ActionListener {
     JButton buttonOpenFile;
     JButton buttonImageClosing;
     JButton buttonImageMap;
+    JButton buttonImageFractal;
+    JButton buttonImageKirsch;
 
     BufferedImage sourceImage;
-    Imclose imageAfterErode;
+    Imclose imageImclose;
     LengthMap imageAfterMap;
+    Fractal imageFractal;
+    KirschFilt imageKirsch;
 
 
     public GUI() {
-        //setSize(1280,720);
-        setSize(640, 640);
+        setSize(350, 500);
         setTitle("Aplikacja Obrazy");
         setLayout(null);
 
         //Map<JButton, String> buttons = new LinkedHashMap<>();
-
-
 
         //buttons.put(buttonOpenFile, "Otwórz obraz");
         //buttons.put(buttonImageClosing, "Zamkniecie");
@@ -51,13 +52,20 @@ public class GUI extends JFrame implements ActionListener {
         add(buttonImageClosing);
         buttonImageClosing.addActionListener(this);
 
-        buttonImageMap = new JButton("Map");
+        buttonImageMap = new JButton("Mapa odległości");
         buttonImageMap.setBounds(50, 200, 200, 50);
         add(buttonImageMap);
         buttonImageMap.addActionListener(this);
 
+        buttonImageFractal = new JButton("Fraktale");
+        buttonImageFractal.setBounds(50, 275, 200, 50);
+        add(buttonImageFractal);
+        buttonImageFractal.addActionListener(this);
 
-
+        buttonImageKirsch = new JButton("Filtracja Kirscha");
+        buttonImageKirsch.setBounds(50, 350, 200, 50);
+        add(buttonImageKirsch);
+        buttonImageKirsch.addActionListener(this);
 
         //addButton(buttons);
 
@@ -98,10 +106,9 @@ public class GUI extends JFrame implements ActionListener {
 
 
         if (buttonImageClosing.equals(source)) {
-
             System.out.println("Zamkniecie");
             new OpenDialog();
-            imageAfterErode = new Imclose(OpenDialog.getData(), sourceImage);
+            imageImclose = new Imclose(OpenDialog.getData(), sourceImage);
         }
 
         if (buttonImageMap.equals(source)){
@@ -109,9 +116,17 @@ public class GUI extends JFrame implements ActionListener {
             new OpenDialogPoint();
             Point p = OpenDialogPoint.getMyPoint();
             System.out.println(p.x + "  " + p.y);
-
             imageAfterMap = new LengthMap(OpenDialogPoint.getMyPoint(), sourceImage);
+        }
 
+        if (buttonImageFractal.equals(source)) {
+            System.out.println("Fraktale");
+            imageFractal = new Fractal(sourceImage);
+        }
+
+        if (buttonImageKirsch.equals(source)) {
+            System.out.println("Kirsch");
+            imageKirsch = new KirschFilt(sourceImage);
         }
     }
 }
