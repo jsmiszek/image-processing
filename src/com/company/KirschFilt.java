@@ -9,4 +9,6 @@ public class KirschFilt {
     public KirschFilt(BufferedImage sourceImage){
         this.image = sourceImage;
     }
+
+
 }

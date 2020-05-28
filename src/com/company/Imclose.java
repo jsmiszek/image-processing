@@ -24,15 +24,18 @@ public class Imclose{
         finalImage = Erosion(finalImage);
         displayImage(finalImage, "Zamknięcie");
         saveImage(finalImage,"zamkniecie.png");
+
+
+        BufferedImage finalImage1 = Dilatation(sourceImage);
+        displayImage(finalImage1, "Dylatacja");
     }
 
     private BufferedImage Erosion(BufferedImage sourceImage) {
-        BufferedImage afterErosion= new BufferedImage(sourceImage.getWidth(),sourceImage.getHeight(), sourceImage.getType());//TYPE_INT_RGB);//TYPE_BYTE_GRAY);
+        BufferedImage afterErosion= new BufferedImage(sourceImage.getWidth(),sourceImage.getHeight(), sourceImage.getType());
 
         for (int k = 0; k < sourceImage.getHeight(); k++) {
             for (int l = 0; l < sourceImage.getWidth(); l++) {
                 afterErosion.getRaster().setSample(l, k, 0, minimumColor(k,l, sourceImage));
-                //afterErosion.setRGB(l, k,minimumColor(k, l, sourceImage));
             }
         }
         return afterErosion;
@@ -44,7 +47,6 @@ public class Imclose{
         for (int k = 0; k < sourceImage.getHeight(); k++) {
             for (int l = 0; l < sourceImage.getWidth(); l++) {
                 afterDilatation.getRaster().setSample(l, k, 0, maximumColor(k, l, sourceImage));
-                //afterDilatation.setRGB(l, k,maximumColor(k, l, sourceImage));
             }
         }
         return afterDilatation;
@@ -59,7 +61,6 @@ public class Imclose{
                 if ((x0 - i) * (x0 - i) + (y0 - j) * (y0 - j) <= radius * radius) { // jeśli jest w obrębie koła
 
                     int temp = sourceImage.getRaster().getSample(j, i, 0);
-                    //int temp = sourceImage.getRGB(j, i);
                     if (temp < minimum) // szukam minimalna wartosc koloru
                         minimum = temp;
                     if (minimum == 0) return minimum;
@@ -75,12 +76,11 @@ public class Imclose{
         int maximum = -1;
         for (int i = x0 - radius; i <= x0 + radius; i++)
             for (int j = y0 - radius; j <= y0 + radius; j++) {
-                if (i < 0 || i >= (int) sourceImage.getHeight() || j < 0 || j >= (int) sourceImage.getWidth())
+                if (i < 0 || i >= sourceImage.getHeight() || j < 0 || j >= sourceImage.getWidth())
                     continue;
                 if ((x0 - i) * (x0 - i) + (y0 - j) * (y0 - j) <= radius * radius) { // jeśli jest w obrębie koła
 
                     int temp = sourceImage.getRaster().getSample(j, i, 0);
-                    //int temp = sourceImage.getRGB(j, i);
                     if (temp > maximum) // szukam minimalna wartosc koloru
                         maximum = temp;
                     if (maximum == 255) return maximum;
