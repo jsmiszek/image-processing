@@ -65,8 +65,6 @@ public class Imclose{
                         minimum = temp;
                     if (minimum == 0) return minimum;
 
-
-
                 }
             }
         return minimum;
@@ -89,10 +87,6 @@ public class Imclose{
         return maximum;
     }
 
-
-
-
-
-
-
 }
+
+
