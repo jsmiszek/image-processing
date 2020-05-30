@@ -10,7 +10,5 @@ public class Main {
         GUI gui = new GUI();
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gui.setVisible(true);
-
     }
-
 }

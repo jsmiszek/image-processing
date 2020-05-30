@@ -42,7 +42,6 @@ public class OpenDialogPoint {
         dialog.setSize(300,300);
         dialog.setVisible(true);
         getData();
-
     }
 
     public static Point getMyPoint() {
@@ -55,10 +54,6 @@ public class OpenDialogPoint {
         this.myPoint = new Point(Integer.parseInt(dataX), Integer.parseInt(dataY));
         return myPoint;
     }
-
-
-
-
 }
 
 

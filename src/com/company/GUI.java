@@ -34,13 +34,6 @@ public class GUI extends JFrame implements ActionListener {
         setTitle("Aplikacja Obrazy");
         setLayout(null);
 
-        //Map<JButton, String> buttons = new LinkedHashMap<>();
-
-        //buttons.put(buttonOpenFile, "Otwórz obraz");
-        //buttons.put(buttonImageClosing, "Zamkniecie");
-       // buttons.put(buttonImageMap, "Mapa odleglosci geodezyjnej");
-
-
         buttonOpenFile = new JButton("Otwórz obraz");
         buttonOpenFile.setBounds(50, 50, 200, 50); // nadanie parametrow przyciskowi
         add(buttonOpenFile);
@@ -67,20 +60,7 @@ public class GUI extends JFrame implements ActionListener {
         add(buttonImageKirsch);
         buttonImageKirsch.addActionListener(this);
 
-        //addButton(buttons);
-
     }
-
-   /* private void addButton(Map<JButton, String> buttons){
-        int i = 0;
-        for(JButton button : buttons.keySet()){
-            button = new JButton(buttons.get(button));
-            button.setBounds(50, 50 + (i * 75), 200, 50);
-            add(button);
-            button.addActionListener(this);
-            i++;
-        }
-    }*/
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -96,6 +76,7 @@ public class GUI extends JFrame implements ActionListener {
                 try {
                     sourceImage = loadImage(file.getName());
                     displayImage(sourceImage, "Obraz pierwotny");
+                    System.out.println(sourceImage.getType());
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                     Component frame = null;

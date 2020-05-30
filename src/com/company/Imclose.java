@@ -24,10 +24,6 @@ public class Imclose{
         finalImage = Erosion(finalImage);
         displayImage(finalImage, "Zamknięcie");
         saveImage(finalImage,"zamkniecie.png");
-
-
-        BufferedImage finalImage1 = Dilatation(sourceImage);
-        displayImage(finalImage1, "Dylatacja");
     }
 
     private BufferedImage Erosion(BufferedImage sourceImage) {

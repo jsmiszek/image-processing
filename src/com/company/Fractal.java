@@ -88,6 +88,4 @@ public class Fractal {
         }
         return c;
     }
-
-
 }

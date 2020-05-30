@@ -36,19 +36,12 @@ public class OpenDialog {
         dialog.setSize(300,300);
         dialog.setVisible(true);
         getData();
-
     }
-
 
     public static int getData(){
         data=in1Field.getText();
         radius = Integer.parseInt(data);
         return radius;
-
-
     }
-
-
-
 }
 
